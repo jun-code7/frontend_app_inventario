@@ -10,6 +10,9 @@ const ItemsList = () => {
   const [mostrarModal, setMostrarModal] = useState(false);
   const [itemEditar, setItemEditar] = useState(null);
   const [busqueda, setBusqueda] = useState('');
+  const [filtroCategoria, setFiltroCategoria] = useState('');
+  const [filtroEstado, setFiltroEstado] = useState('');
+
 
 
   const obtenerItems = async () => {
@@ -24,14 +27,21 @@ const ItemsList = () => {
 
   const itemsFiltrados = items.filter(item => {
     const termino = busqueda.toLowerCase();
-  
-    return (
+    const coincideTexto =
       item.nombre.toLowerCase().includes(termino) ||
       item.descripcion.toLowerCase().includes(termino) ||
       item.estado.toLowerCase().includes(termino) ||
-      (item.categoria?.nombre?.toLowerCase().includes(termino))
-    );
-  });
+      item.categoria?.nombre?.toLowerCase().includes(termino);
+  
+      const coincideCategoria =
+        !filtroCategoria || item.categoria?.nombre === filtroCategoria;
+    
+      const coincideEstado =
+        !filtroEstado || item.estado === filtroEstado;
+    
+      return coincideTexto && coincideCategoria && coincideEstado;
+    });
+  
   
   
   const obtenerCategorias = async () => {
@@ -91,15 +101,47 @@ const ItemsList = () => {
         <Button variant="success" onClick={() => abrirModal()}>Agregar Ítem</Button>
       </div>
 
-      <div className="mb-3">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Buscar ítem por nombre o descripción..."
-          value={busqueda}
-          onChange={(e) => setBusqueda(e.target.value)}
-        />
+            <div className="row mb-3">
+        <div className="col-md-4 mb-2">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Buscar por nombre, descripción, estado o categoría..."
+            value={busqueda}
+            onChange={(e) => setBusqueda(e.target.value)}
+          />
+        </div>
+
+        <div className="col-md-4 mb-2">
+          <select
+            className="form-select"
+            value={filtroCategoria}
+            onChange={(e) => setFiltroCategoria(e.target.value)}
+          >
+            <option value="">Todas las categorías</option>
+            {categorias.map((cat) => (
+              <option key={cat.id} value={cat.nombre}>
+                {cat.nombre}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="col-md-4 mb-2">
+          <select
+            className="form-select"
+            value={filtroEstado}
+            onChange={(e) => setFiltroEstado(e.target.value)}
+          >
+            <option value="">Todos los estados</option>
+            <option value="Bueno">Bueno</option>
+            <option value="Disponible">Disponible</option>
+            <option value="Dañado">Dañado</option>
+            <option value="En mantenimiento">En mantenimiento</option>
+          </select>
+        </div>
       </div>
+
 
       <div className="table-responsive">
         <table className="table table-hover table-bordered align-middle">
@@ -108,7 +150,7 @@ const ItemsList = () => {
               <th>#</th>
               <th>Nombre</th>
               <th>Descripción</th>
-              <th>Categoría</th>
+              {/* <th>Categoría</th> */}
               <th>Cantidad</th>
               <th>Estado</th>
               <th className="text-end">Acciones</th>
@@ -125,13 +167,13 @@ const ItemsList = () => {
                   <td>{index + 1}</td>
                   <td>{item.nombre}</td>
                   <td>{item.descripcion}</td>
-                  <td>{item.categoria?.nombre || 'Sin categoría'}</td>
+                  {/* <td>{item.categoria?.nombre || 'Sin categoría'}</td> */}
                   <td>{item.cantidad}</td>
                   <td>{item.estado}</td>
                   <td className="text-end">
                     <div className="btn-group btn-group-sm">
-                      <button className="btn btn-outline-primary" onClick={() => itemEditar(item)}>Editar</button>
-                      <button className="btn btn-outline-danger" onClick={() => eliminarItem(item.id)}>Eliminar</button>
+                    <button className="btn btn-outline-primary" onClick={() => abrirModal(item)}>Editar</button>
+                    <button className="btn btn-outline-danger" onClick={() => eliminarItem(item.id)}>Eliminar</button>
                     </div>
                   </td>
                 </tr>

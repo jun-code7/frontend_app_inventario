@@ -13,8 +13,15 @@ const ItemModal = ({ show, handleClose, handleSubmit, itemEditar, categorias }) 
 
   useEffect(() => {
     if (itemEditar) {
-      setFormData(itemEditar);
-    } else {
+      setFormData({
+        nombre: itemEditar.nombre || '',
+        descripcion: itemEditar.descripcion || '',
+        categoria_id: itemEditar.categoria_id || '', // Asegúrate que sea el ID
+        cantidad: itemEditar.cantidad || '',
+        estado: itemEditar.estado || ''
+      });
+    }
+     else {
       setFormData({
         nombre: '',
         descripcion: '',
@@ -25,6 +32,19 @@ const ItemModal = ({ show, handleClose, handleSubmit, itemEditar, categorias }) 
     }
   }, [itemEditar]);
 
+  useEffect(() => {
+    if (!show) {
+      setFormData({
+        nombre: '',
+        descripcion: '',
+        categoria_id: '',
+        cantidad: '',
+        estado: ''
+      });
+    }
+  }, [show]);
+  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -32,7 +52,8 @@ const ItemModal = ({ show, handleClose, handleSubmit, itemEditar, categorias }) 
 
   const onSubmit = (e) => {
     e.preventDefault();
-    handleSubmit(formData);
+    handleSubmit({ ...formData, categoria_id: parseInt(formData.categoria_id, 10) });
+
   };
 
   return (
@@ -105,12 +126,16 @@ const ItemModal = ({ show, handleClose, handleSubmit, itemEditar, categorias }) 
 
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Cancelar
-          </Button>
-          <Button variant="primary" type="submit">
-            {itemEditar ? 'Guardar Cambios' : 'Agregar Ítem'}
-          </Button>
+        <Button
+          variant="primary"
+          type="submit"
+          disabled={
+            !formData.nombre || !formData.descripcion || !formData.categoria_id || !formData.cantidad || !formData.estado
+          }
+          >
+          {itemEditar ? 'Guardar Cambios' : 'Agregar Ítem'}
+        </Button>
+
         </Modal.Footer>
       </Form>
     </Modal>
