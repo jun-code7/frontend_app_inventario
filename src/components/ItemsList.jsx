@@ -9,20 +9,36 @@ const ItemsList = () => {
   const [categorias, setCategorias] = useState([]);
   const [mostrarModal, setMostrarModal] = useState(false);
   const [itemEditar, setItemEditar] = useState(null);
+  const [busqueda, setBusqueda] = useState('');
+
 
   const obtenerItems = async () => {
     try {
       const res = await axios.get('http://localhost:3000/api/inventario/items');
       setItems(res.data);
+     // console.log(res.data)
     } catch (error) {
       console.error('Error al obtener los ítems:', error);
     }
   };
 
+  const itemsFiltrados = items.filter(item => {
+    const termino = busqueda.toLowerCase();
+  
+    return (
+      item.nombre.toLowerCase().includes(termino) ||
+      item.descripcion.toLowerCase().includes(termino) ||
+      item.estado.toLowerCase().includes(termino) ||
+      (item.categoria?.nombre?.toLowerCase().includes(termino))
+    );
+  });
+  
+  
   const obtenerCategorias = async () => {
     try {
       const res = await axios.get('http://localhost:3000/api/inventario/categorias');
       setCategorias(res.data);
+     // console.log(res.data)
     } catch (error) {
       console.error('Error al obtener categorías:', error);
     }
@@ -75,6 +91,16 @@ const ItemsList = () => {
         <Button variant="success" onClick={() => abrirModal()}>Agregar Ítem</Button>
       </div>
 
+      <div className="mb-3">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Buscar ítem por nombre o descripción..."
+          value={busqueda}
+          onChange={(e) => setBusqueda(e.target.value)}
+        />
+      </div>
+
       <div className="table-responsive">
         <table className="table table-hover table-bordered align-middle">
           <thead className="table-dark">
@@ -82,35 +108,37 @@ const ItemsList = () => {
               <th>#</th>
               <th>Nombre</th>
               <th>Descripción</th>
-              <th>Categoría ID</th>
+              <th>Categoría</th>
               <th>Cantidad</th>
               <th>Estado</th>
               <th className="text-end">Acciones</th>
             </tr>
           </thead>
           <tbody>
-            {items.map((item, index) => (
-              <tr key={item.id}>
-                <td>{index + 1}</td>
-                <td>{item.nombre}</td>
-                <td>{item.descripcion}</td>
-                <td>{item.categoria_id}</td>
-                <td>{item.cantidad}</td>
-                <td>{item.estado}</td>
-                <td className="text-end">
-                  <div className="btn-group btn-group-sm">
-                    <Button variant="outline-primary" onClick={() => abrirModal(item)}>Editar</Button>
-                    <Button variant="outline-danger" onClick={() => eliminarItem(item.id)}>Eliminar</Button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-            {items.length === 0 && (
+            {itemsFiltrados.length === 0 ? (
               <tr>
-                <td colSpan="7" className="text-center">No hay ítems registrados</td>
+                <td colSpan="7" className="text-center">No hay ítems que coincidan con la búsqueda</td>
               </tr>
+            ) : (
+              itemsFiltrados.map((item, index) => (
+                <tr key={item.id}>
+                  <td>{index + 1}</td>
+                  <td>{item.nombre}</td>
+                  <td>{item.descripcion}</td>
+                  <td>{item.categoria?.nombre || 'Sin categoría'}</td>
+                  <td>{item.cantidad}</td>
+                  <td>{item.estado}</td>
+                  <td className="text-end">
+                    <div className="btn-group btn-group-sm">
+                      <button className="btn btn-outline-primary" onClick={() => itemEditar(item)}>Editar</button>
+                      <button className="btn btn-outline-danger" onClick={() => eliminarItem(item.id)}>Eliminar</button>
+                    </div>
+                  </td>
+                </tr>
+              ))
             )}
           </tbody>
+
         </table>
       </div>
 
