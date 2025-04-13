@@ -6,6 +6,7 @@ import { ToastContainer } from 'react-toastify';
 import Categorias from "./pages/Categorias";
 import Inicio from "./pages/Inicio"
 import Items from "./pages/Items";
+import Movimientos from "./pages/Movimientos"
 
 function App() {
   return (
@@ -43,6 +44,14 @@ function App() {
                         Items
                       </NavLink>
                     </li>
+                    <li className="nav-item">
+                      <NavLink 
+                        className={({ isActive }) => `nav-link ${isActive ? 'active fw-bold text-primary' : ''}`}
+                        to="/movimientos"
+                      >
+                        Movimientos
+                      </NavLink>
+                    </li>
                   </ul>
                 </div>
             </nav>
@@ -51,6 +60,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Inicio />} />
           <Route path="/categorias" element={<Categorias />} />
+          <Route path="/movimientos" element={<Movimientos />} />
           <Route path="/items" element={<Items />} />
         </Routes>
       </div>

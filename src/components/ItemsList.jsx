@@ -156,6 +156,7 @@ const ItemsList = () => {
           <thead className="table-dark">
             <tr>
               <th>#</th>
+              <th>Item_id</th>
               <th>Nombre</th>
               <th>Descripción</th>
               {/* <th>Categoría</th> */}
@@ -173,6 +174,7 @@ const ItemsList = () => {
               itemsFiltrados.map((item, index) => (
                 <tr key={item.id}>
                   <td>{index + 1}</td>
+                  <td>{item.id}</td>
                   <td>{item.nombre}</td>
                   <td>{item.descripcion}</td>
                   {/* <td>{item.categoria?.nombre || 'Sin categoría'}</td> */}
