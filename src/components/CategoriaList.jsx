@@ -1,12 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'; 
 import api from '../services/api';
-import CategoriaForm from './CategoriaForm';
+import CategoriaModal from './CategoriaModal';
+import { Button } from 'react-bootstrap';
+import { toast } from 'react-toastify';
+
 
 export default function CategoriaList() {
   const [categorias, setCategorias] = useState([]);
-  const [editandoId, setEditandoId] = useState(null);
-  const [editNombre, setEditNombre] = useState('');
-  const [editDescripcion, setEditDescripcion] = useState('');
+  const [mostrarModal, setMostrarModal] = useState(false);
+  const [categoriaEditar, setCategoriaEditar] = useState(null);
+  const [idAEliminar, setIdAEliminar] = useState(null);
+  const [mostrarModalConfirmacion, setMostrarModalConfirmacion] = useState(false);
+
 
   const fetchCategorias = async () => {
     const res = await api.get('/categorias');
@@ -16,78 +21,106 @@ export default function CategoriaList() {
   useEffect(() => {
     fetchCategorias();
   }, []);
-
-  const eliminarCategoria = async (id) => {
-    if (window.confirm('¿Estás seguro de eliminar esta categoría?')) {
-      await api.delete(`/categorias/${id}`);
+  
+  
+  const confirmarEliminacion = (id) => {
+    setIdAEliminar(id);
+    setMostrarModalConfirmacion(true);
+  };
+  
+  const ejecutarEliminacion = async () => {
+    try {
+      await api.delete(`/categorias/${idAEliminar}`);
+      toast.info('Categoría eliminada');
       fetchCategorias();
+    } catch {
+      toast.error('Error al eliminar la categoría');
+    } finally {
+      setMostrarModalConfirmacion(false);
+      setIdAEliminar(null);
     }
   };
 
-  const activarEdicion = (categoria) => {
-    setEditandoId(categoria.id);
-    setEditNombre(categoria.nombre);
-    setEditDescripcion(categoria.descripcion);
+  const abrirModal = (categoria = null) => {
+    setCategoriaEditar(categoria);
+    setMostrarModal(true);
   };
 
-  const guardarEdicion = async (id) => {
-    await api.put(`/categorias/${id}`, {
-      nombre: editNombre,
-      descripcion: editDescripcion,
-    });
-    setEditandoId(null);
-    fetchCategorias();
+  const cerrarModal = () => {
+    setCategoriaEditar(null);
+    setMostrarModal(false);
   };
 
-  const cancelarEdicion = () => {
-    setEditandoId(null);
-    setEditNombre('');
-    setEditDescripcion('');
+  const manejarEnvioFormulario = async (formData) => {
+    try {
+      if (categoriaEditar) {
+        await api.put(`/categorias/${categoriaEditar.id}`, formData);
+        toast.success('Categoría actualizada correctamente');
+      } else {
+        await api.post('/categorias', formData);
+        toast.success('Categoría creada exitosamente');
+      }
+      cerrarModal();
+      fetchCategorias();
+    } catch (error) {
+      toast.error('Error al guardar la categoría');
+      console.error('Error al guardar la categoría:', error);
+    }
   };
 
   return (
-    <div className="container mt-4">
 
-      <h3>Lista de Categorías</h3>
+  
+    <div className="container mt-4">
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h4>Lista de Categorías</h4>
+        <Button variant="success" onClick={() => abrirModal()}>Agregar Categoría</Button>
+      </div>
+
       <ul className="list-group">
         {categorias.map(cat => (
           <li key={cat.id} className="list-group-item d-flex justify-content-between align-items-center">
-            {editandoId === cat.id ? (
-              <div className="w-100">
-                <input
-                  className="form-control mb-1"
-                  value={editNombre}
-                  onChange={(e) => setEditNombre(e.target.value)}
-                />
-                <textarea
-                  className="form-control mb-2"
-                  value={editDescripcion}
-                  onChange={(e) => setEditDescripcion(e.target.value)}
-                />
-                <button className="btn btn-success btn-sm me-2" onClick={() => guardarEdicion(cat.id)}>Guardar</button>
-                <button className="btn btn-secondary btn-sm" onClick={cancelarEdicion}>Cancelar</button>
-              </div>
-            ) : (
-                <div className="d-flex justify-content-between align-items-center mb-2 w-100" style={{ minHeight: '3rem' }}>
-  <div className="flex-grow-1 me-3">
-    <div className="d-flex flex-column justify-content-center">
-      <strong>{cat.nombre}</strong>
-      <span>{cat.descripcion}</span>
-    </div>
-  </div>
-  <div className="btn-group btn-group-sm flex-shrink-0" role="group">
-    <button className="btn btn-outline-primary" onClick={() => activarEdicion(cat)}>Editar</button>
-    <button className="btn btn-outline-danger" onClick={() => eliminarCategoria(cat.id)}>Eliminar</button>
-  </div>
-
-</div>
-   
-            )}
+            <div className="d-flex flex-column">
+              <strong>{cat.nombre}</strong>
+              <span>{cat.descripcion}</span>
+            </div>
+            <div className="btn-group btn-group-sm">
+              <button className="btn btn-outline-primary" onClick={() => abrirModal(cat)}>Editar</button>
+              <button className="btn btn-outline-danger" onClick={() => confirmarEliminacion(cat.id)}>Eliminar</button>
+            </div>
           </li>
         ))}
       </ul>
-      <hr/>
-      <CategoriaForm onCategoriaCreada={fetchCategorias} />
+
+      <CategoriaModal
+        show={mostrarModal}
+        handleClose={cerrarModal}
+        handleSubmit={manejarEnvioFormulario}
+        categoriaEditar={categoriaEditar}
+      />
+      
+      
+      {/* Modal de Confirmación */}
+      {mostrarModalConfirmacion && (
+        <div className="modal show fade d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Confirmar Eliminación</h5>
+                <button type="button" className="btn-close" onClick={() => setMostrarModalConfirmacion(false)}></button>
+              </div>
+              <div className="modal-body">
+                <p>¿Estás seguro de que deseas eliminar esta categoría?</p>
+              </div>
+              <div className="modal-footer">
+                <button className="btn btn-secondary" onClick={() => setMostrarModalConfirmacion(false)}>Cancelar</button>
+                <button className="btn btn-danger" onClick={ejecutarEliminacion}>Eliminar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
+  
 }
