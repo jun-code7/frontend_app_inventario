@@ -62,7 +62,7 @@ const ItemsList = () => {
   const eliminarItem = async (id) => {
     if (window.confirm('¿Estás seguro de que deseas eliminar este ítem?')) {
       try {
-        await axios.delete(`https://db-supabase.onrender.com/api/inventario/items${id}`);
+        await axios.delete(`https://db-supabase.onrender.com/api/inventario/items/${id}`);
         obtenerItems();
       } catch (error) {
         console.error('Error al eliminar el ítem:', error);
