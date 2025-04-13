@@ -17,7 +17,7 @@ const ItemsList = () => {
 
   const obtenerItems = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/api/inventario/items');
+      const res = await axios.get('https://db-supabase.onrender.com/api/inventario/items');
       setItems(res.data);
      // console.log(res.data)
     } catch (error) {
@@ -46,7 +46,7 @@ const ItemsList = () => {
   
   const obtenerCategorias = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/api/inventario/categorias');
+      const res = await axios.get('https://db-supabase.onrender.com/api/inventario/categorias');
       setCategorias(res.data);
      // console.log(res.data)
     } catch (error) {
@@ -62,7 +62,7 @@ const ItemsList = () => {
   const eliminarItem = async (id) => {
     if (window.confirm('¿Estás seguro de que deseas eliminar este ítem?')) {
       try {
-        await axios.delete(`http://localhost:3000/api/inventario/items/${id}`);
+        await axios.delete(`https://db-supabase.onrender.com/api/inventario/items${id}`);
         obtenerItems();
       } catch (error) {
         console.error('Error al eliminar el ítem:', error);
@@ -83,9 +83,9 @@ const ItemsList = () => {
   const manejarEnvioFormulario = async (formData) => {
     try {
       if (itemEditar) {
-        await axios.put(`http://localhost:3000/api/inventario/items/${itemEditar.id}`, formData);
+        await axios.put(`https://db-supabase.onrender.com/api/inventario/items/${itemEditar.id}`, formData);
       } else {
-        await axios.post('http://localhost:3000/api/inventario/items', formData);
+        await axios.post('https://db-supabase.onrender.com/api/inventario/items', formData);
       }
       cerrarModal();
       obtenerItems();
