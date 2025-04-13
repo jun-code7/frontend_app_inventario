@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
 import ItemModal from './ItemModal';
+import { toast } from 'react-toastify';
+
 
 const ItemsList = () => {
   const [items, setItems] = useState([]);
@@ -22,6 +24,7 @@ const ItemsList = () => {
      // console.log(res.data)
     } catch (error) {
       console.error('Error al obtener los ítems:', error);
+      toast.error("Ocurrió un error");
     }
   };
 
@@ -51,6 +54,7 @@ const ItemsList = () => {
      // console.log(res.data)
     } catch (error) {
       console.error('Error al obtener categorías:', error);
+      toast.error("Ocurrió un error");
     }
   };
 
@@ -63,9 +67,11 @@ const ItemsList = () => {
     if (window.confirm('¿Estás seguro de que deseas eliminar este ítem?')) {
       try {
         await axios.delete(`https://db-supabase.onrender.com/api/inventario/items/${id}`);
+        toast.info("Ítem eliminado");
         obtenerItems();
       } catch (error) {
         console.error('Error al eliminar el ítem:', error);
+        toast.error("Ocurrió un error");
       }
     }
   };
@@ -84,8 +90,10 @@ const ItemsList = () => {
     try {
       if (itemEditar) {
         await axios.put(`https://db-supabase.onrender.com/api/inventario/items/${itemEditar.id}`, formData);
+        toast.success("Ítem editado correctamente");
       } else {
         await axios.post('https://db-supabase.onrender.com/api/inventario/items', formData);
+        toast.success("Ítem creado con éxito");
       }
       cerrarModal();
       obtenerItems();
