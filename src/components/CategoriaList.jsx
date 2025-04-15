@@ -71,28 +71,6 @@ export default function CategoriaList() {
 
   return (
 
-  
-    // <div className="container mt-4">
-    //   <div className="d-flex justify-content-between align-items-center mb-3">
-    //     <h4>Lista de Categorías</h4>
-    //     <Button variant="success" onClick={() => abrirModal()}>Agregar Categoría</Button>
-    //   </div>
-
-    //   <ul className="list-group">
-    //     {categorias.map(cat => (
-    //       <li key={cat.id} className="list-group-item d-flex justify-content-between align-items-center">
-    //         <div className="d-flex flex-column">
-    //           <strong>{cat.nombre}</strong>
-    //           <span>{cat.descripcion}</span>
-    //         </div>
-    //         <div className="btn-group btn-group-sm">
-    //           <button className="btn btn-outline-primary" onClick={() => abrirModal(cat)}>Editar</button>
-    //           <button className="btn btn-outline-danger" onClick={() => confirmarEliminacion(cat.id)}>Eliminar</button>
-    //         </div>
-    //       </li>
-    //     ))}
-    //   </ul>
-
     <div className="container mt-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h4>Lista de Categorías</h4>
