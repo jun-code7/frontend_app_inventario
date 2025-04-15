@@ -71,6 +71,7 @@ export default function Movimientos() {
               <th>Item</th>
               <th>Tipo</th>
               <th>Cantidad</th>
+              <th>Observaciones</th>
               <th>Fecha</th>
             </tr>
           </thead>
@@ -86,6 +87,7 @@ export default function Movimientos() {
                   <td className=' text-black fw-bolder '>{mov.item_nombre}</td>
                   <td>{mov.tipo_movimiento}</td>
                   <td>{mov.cantidad}</td>
+                  <td>{mov.observaciones}</td>
                   <td>{new Date(mov.fecha_movimiento).toLocaleString()}</td>
                 </tr>
               ))
