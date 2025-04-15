@@ -5,6 +5,7 @@ import { Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 
 
+
 export default function CategoriaList() {
   const [categorias, setCategorias] = useState([]);
   const [mostrarModal, setMostrarModal] = useState(false);
@@ -71,26 +72,70 @@ export default function CategoriaList() {
   return (
 
   
+    // <div className="container mt-4">
+    //   <div className="d-flex justify-content-between align-items-center mb-3">
+    //     <h4>Lista de Categorías</h4>
+    //     <Button variant="success" onClick={() => abrirModal()}>Agregar Categoría</Button>
+    //   </div>
+
+    //   <ul className="list-group">
+    //     {categorias.map(cat => (
+    //       <li key={cat.id} className="list-group-item d-flex justify-content-between align-items-center">
+    //         <div className="d-flex flex-column">
+    //           <strong>{cat.nombre}</strong>
+    //           <span>{cat.descripcion}</span>
+    //         </div>
+    //         <div className="btn-group btn-group-sm">
+    //           <button className="btn btn-outline-primary" onClick={() => abrirModal(cat)}>Editar</button>
+    //           <button className="btn btn-outline-danger" onClick={() => confirmarEliminacion(cat.id)}>Eliminar</button>
+    //         </div>
+    //       </li>
+    //     ))}
+    //   </ul>
+
     <div className="container mt-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h4>Lista de Categorías</h4>
         <Button variant="success" onClick={() => abrirModal()}>Agregar Categoría</Button>
       </div>
 
-      <ul className="list-group">
-        {categorias.map(cat => (
-          <li key={cat.id} className="list-group-item d-flex justify-content-between align-items-center">
-            <div className="d-flex flex-column">
-              <strong>{cat.nombre}</strong>
-              <span>{cat.descripcion}</span>
+      <div className="table-responsive">
+        <ul className="list-group list-group-flush border rounded overflow-hidden">
+          {/* Encabezado estilo tabla */}
+          <li className="list-group-item bg-dark text-white fw-bold d-flex justify-content-between align-items-center">
+            <div className="d-flex" style={{ width: "100%" }}>
+              <span style={{ width: "50px" }}>#</span>
+              <span>Nombre / Descripción</span>
             </div>
-            <div className="btn-group btn-group-sm">
-              <button className="btn btn-outline-primary" onClick={() => abrirModal(cat)}>Editar</button>
-              <button className="btn btn-outline-danger" onClick={() => confirmarEliminacion(cat.id)}>Eliminar</button>
+            <div style={{ width: "120px" }} className="text-end">
+              Acciones
             </div>
           </li>
-        ))}
-      </ul>
+          
+          {/* Filas de datos ordenadas alfabéticamente */}
+          {categorias.length === 0 ? (
+            <li className="list-group-item text-center">No hay categorías disponibles</li>
+          ) : (
+            [...categorias]
+              .sort((a, b) => a.nombre.localeCompare(b.nombre)) // Ordenar alfabéticamente
+              .map((cat, index) => (
+                <li key={cat.id} className="list-group-item d-flex justify-content-between align-items-center hover-effect">
+                  <div className="d-flex" style={{ width: "100%" }}>
+                    <span style={{ width: "50px" }}>{index + 1}</span>
+                    <div className="d-flex flex-column">
+                      <strong>{cat.nombre}</strong>
+                      <span className="text-muted small">{cat.descripcion}</span>
+                    </div>
+                  </div>
+                  <div className="btn-group btn-group-sm">
+                    <button className="btn btn-outline-primary" onClick={() => abrirModal(cat)}>Editar</button>
+                    <button className="btn btn-outline-danger" onClick={() => confirmarEliminacion(cat.id)}>Eliminar</button>
+                  </div>
+                </li>
+              ))
+          )}
+        </ul>
+      </div>
 
       <CategoriaModal
         show={mostrarModal}

@@ -175,8 +175,8 @@ const ItemsList = () => {
                 <tr key={item.id}>
                   <td>{index + 1}</td>
                   {/* <td>{item.id}</td> */}
-                  <td>{item.nombre}</td>
-                  <td>{item.descripcion}</td>
+                  <td className=' text-black fw-bolder '>{item.nombre}</td>
+                  <td class=" text-normal fw-normal">{item.descripcion}</td>
                   {/* <td>{item.categoria?.nombre || 'Sin categoría'}</td> */}
                   <td>{item.cantidad}</td>
                   <td>{item.estado}</td>

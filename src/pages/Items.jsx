@@ -1,4 +1,5 @@
 import ItemsList from "../components/ItemsList";
+import '../styles/tables.css'
 
 export default function Items() {
   return (

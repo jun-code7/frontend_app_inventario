@@ -1,5 +1,6 @@
 import CategoriaList from "../components/CategoriaList";
 
+
 export default function Categorias() {
   return (
     <div className="container mt-5">

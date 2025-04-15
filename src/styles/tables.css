@@ -1,0 +1,66 @@
+/* src/styles/tableStyles.css */
+.table {
+    border-radius: 0.5rem;
+    overflow: hidden;
+    /* Aseguramos que el borde sea claramente visible */
+    border: 1px solid #dee2e6; /* Color de borde estándar de Bootstrap */
+  }
+  
+  .table-bordered {
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+  
+  /* Reforzamos todos los bordes de celdas y encabezados */
+  .table-bordered th,
+  .table-bordered td {
+    border: 1px solid #dee2e6;
+  }
+  
+  /* Aseguramos que el borde inferior se vea claramente */
+  .table-bordered tbody tr:last-child td {
+    border-bottom-width: 2px; /* Borde inferior más grueso */
+  }
+  
+  /* Esquinas superiores redondeadas */
+  .table-bordered thead tr:first-child th:first-child {
+    border-top-left-radius: 0.5rem;
+  }
+  
+  .table-bordered thead tr:first-child th:last-child {
+    border-top-right-radius: 0.5rem;
+  }
+  
+  /* Esquinas inferiores redondeadas */
+  .table-bordered tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 0.5rem;
+  }
+  
+  .table-bordered tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 0.5rem;
+  } 
+
+  /* Añadir a tu archivo tableStyles.css */
+
+/* Estilo para que la lista parezca tabla */
+.list-group.border {
+    border-radius: 0.5rem !important;
+    border: 1px solid #dee2e6 !important;
+  }
+  
+  /* Efecto hover similar al de las tablas */
+  .hover-effect:hover {
+    background-color: rgba(0,0,0,.075);
+  }
+  
+  /* Asegurar que el primer y último elemento respetan los bordes redondeados */
+  .list-group.rounded .list-group-item:first-child {
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+  }
+  
+  .list-group.rounded .list-group-item:last-child {
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+    border-bottom: 1px solid #dee2e6; /* Asegura que el borde inferior sea visible */
+  }
