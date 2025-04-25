@@ -1,6 +1,6 @@
 // src/components/ItemsList.jsx
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../services/api'
 import { Button } from 'react-bootstrap';
 import ItemModal from './ItemModal';
 import { toast } from 'react-toastify';
@@ -19,7 +19,7 @@ const ItemsList = () => {
 
   const obtenerItems = async () => {
     try {
-      const res = await axios.get('https://db-supabase.onrender.com/api/inventario/items');
+      const res = await api.get('/items');
       setItems(res.data);
      // console.log(res.data)
     } catch (error) {
@@ -49,7 +49,7 @@ const ItemsList = () => {
   
   const obtenerCategorias = async () => {
     try {
-      const res = await axios.get('https://db-supabase.onrender.com/api/inventario/categorias');
+      const res = await api.get('categorias');
       setCategorias(res.data);
      // console.log(res.data)
     } catch (error) {
@@ -66,7 +66,7 @@ const ItemsList = () => {
   const eliminarItem = async (id) => {
     if (window.confirm('¿Estás seguro de que deseas eliminar este ítem?')) {
       try {
-        await axios.delete(`https://db-supabase.onrender.com/api/inventario/items/${id}`);
+        await api.delete(`/items/${id}`);
         toast.info("Ítem eliminado");
         obtenerItems();
       } catch (error) {
@@ -89,10 +89,10 @@ const ItemsList = () => {
   const manejarEnvioFormulario = async (formData) => {
     try {
       if (itemEditar) {
-        await axios.put(`https://db-supabase.onrender.com/api/inventario/items/${itemEditar.id}`, formData);
+        await api.put(`/items/${itemEditar.id}`, formData);
         toast.success("Ítem editado correctamente");
       } else {
-        await axios.post('https://db-supabase.onrender.com/api/inventario/items', formData);
+        await api.post('/items', formData);
         toast.success("Ítem creado con éxito");
       }
       cerrarModal();  
