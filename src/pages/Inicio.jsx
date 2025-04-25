@@ -5,6 +5,7 @@ export default function Inicio() {
   return (
     <div className="text-center">
       <h1 className="display-4">Bienvenido al Sistema de Inventario</h1>
+      <br />
       <h2  className="display-5" >Aly's Eventos</h2>
       <br /><br />
       <p className="lead">Gestiona tus ítems y categorías de forma rápida y sencilla.</p>

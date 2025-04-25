@@ -15,7 +15,7 @@ function App() {
     <Router>
       <div className="container mt-4">
             <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm rounded px-4 py-2 mb-4">
-                <NavLink className="navbar-brand fw-bold text-primary" to="/">Inventario</NavLink>
+                <NavLink className="navbar-brand fw-bold text-primary" to="/">Inventario Aly's </NavLink>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                   <span className="navbar-toggler-icon"></span>
                 </button>
