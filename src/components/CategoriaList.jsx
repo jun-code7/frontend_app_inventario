@@ -3,6 +3,8 @@ import api from '../services/api';
 import CategoriaModal from './CategoriaModal';
 import { Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
+
 
 
 
@@ -92,24 +94,25 @@ export default function CategoriaList() {
           
           {/* Filas de datos ordenadas alfabéticamente */}
           {categorias.length === 0 ? (
-            <li className="list-group-item text-center">No hay categorías disponibles</li>
+            <li className="list-group-item text-center">Cargando...</li>
           ) : (
             [...categorias]
               .sort((a, b) => a.nombre.localeCompare(b.nombre)) // Ordenar alfabéticamente
               .map((cat, index) => (
                 <li key={cat.id} className="list-group-item d-flex justify-content-between align-items-center hover-effect">
-                  <div className="d-flex" style={{ width: "100%" }}>
-                    <span style={{ width: "50px" }}>{index + 1}</span>
-                    <div className="d-flex flex-column">
-                      <strong>{cat.nombre}</strong>
-                      <span className="text-muted small">{cat.descripcion}</span>
-                    </div>
+                <Link to={`/categorias/${cat.id}`} className="d-flex text-decoration-none text-dark" style={{ width: "100%" }}>
+                  <span style={{ width: "50px" }}>{index + 1}</span>
+                  <div className="d-flex flex-column">
+                    <strong>{cat.nombre}</strong>
+                    <span className="text-muted small">{cat.descripcion}</span>
                   </div>
-                  <div className="btn-group btn-group-sm">
-                    <button className="btn btn-outline-primary" onClick={() => abrirModal(cat)}>Editar</button>
-                    <button className="btn btn-outline-danger" onClick={() => confirmarEliminacion(cat.id)}>Eliminar</button>
-                  </div>
-                </li>
+                </Link>
+                <div className="btn-group btn-group-sm">
+                  <button className="btn btn-outline-primary" onClick={() => abrirModal(cat)}>Editar</button>
+                  <button className="btn btn-outline-danger" onClick={() => confirmarEliminacion(cat.id)}>Eliminar</button>
+                </div>
+              </li>
+
               ))
           )}
         </ul>

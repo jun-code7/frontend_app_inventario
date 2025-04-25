@@ -95,7 +95,7 @@ const ItemsList = () => {
         await axios.post('https://db-supabase.onrender.com/api/inventario/items', formData);
         toast.success("Ítem creado con éxito");
       }
-      cerrarModal();
+      cerrarModal();  
       obtenerItems();
     } catch (error) {
       console.error('Error al guardar el ítem:', error);
@@ -168,7 +168,7 @@ const ItemsList = () => {
           <tbody>
             {itemsFiltrados.length === 0 ? (
               <tr>
-                <td colSpan="7" className="text-center">No hay ítems que coincidan con la búsqueda</td>
+                <td colSpan="7" className="text-center">Cargando...</td>
               </tr>
             ) : (
               itemsFiltrados.map((item, index) => (
@@ -176,7 +176,7 @@ const ItemsList = () => {
                   <td>{index + 1}</td>
                   {/* <td>{item.id}</td> */}
                   <td className=' text-black fw-bolder '>{item.nombre}</td>
-                  <td class=" text-normal fw-normal">{item.descripcion}</td>
+                  <td className=" text-normal fw-normal">{item.descripcion}</td>
                   {/* <td>{item.categoria?.nombre || 'Sin categoría'}</td> */}
                   <td>{item.cantidad}</td>
                   <td>{item.estado}</td>

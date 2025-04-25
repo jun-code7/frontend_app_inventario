@@ -76,7 +76,7 @@ export default function Movimientos() {
           <tbody>
             {movimientos.length === 0 ? (
               <tr>
-                <td colSpan="5" className="text-center">No hay movimientos disponibles</td>
+                <td colSpan="5" className="text-center">Cargando...</td>
               </tr>
             ) : (
               movimientos.map((mov, index) => (

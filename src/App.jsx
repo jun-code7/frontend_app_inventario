@@ -7,6 +7,7 @@ import Categorias from "./pages/Categorias";
 import Inicio from "./pages/Inicio"
 import Items from "./pages/Items";
 import Movimientos from "./pages/Movimientos"
+import CategoriaDetalle from "./pages/CategoriaDetalle"
 
 function App() {
   return (
@@ -59,6 +60,7 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Inicio />} />
+          <Route path="/categorias/:id" element={<CategoriaDetalle/>} />
           <Route path="/categorias" element={<Categorias />} />
           <Route path="/movimientos" element={<Movimientos />} />
           <Route path="/items" element={<Items />} />
